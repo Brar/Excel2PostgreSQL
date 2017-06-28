@@ -1,20 +1,51 @@
-﻿using System;
-using System.IO;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
+using Excel2PostgreSQL.Properties;
 
 namespace Excel2PostgreSQL
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        internal static CommandLineApplication Args { get; } = new CommandLineApplication();
+
+        static int Main(string[] args)
         {
-            var app = new Excel.Application {Visible = true};
-            var wb = app.OpenWorkbook(Path.GetFullPath(args[0]));
+            SetupArgsParser();
+            return Args.Execute(args);
+        }
+
+        private static void SetupArgsParser()
+        {
+            string applicationName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
+            string applicationVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+            Args.Name = applicationName;
+            Args.Argument(LocalizedStrings.FileArgName, LocalizedStrings.FileArgDescription);
+            Args.HelpOption("-h | -? | --help");
+            Args.VersionOption("-V | --version", $"{applicationName} v{applicationVersion}");
+            Args.OnExecute(() => ExecuteCommandLineApplication());
+        }
+
+        private static int ExecuteCommandLineApplication()
+        {
+            if (Args.Arguments.First().Value == null)
+            {
+                Console.Error.WriteLine(LocalizedStrings.MissingExcelFileArg);
+                Console.Error.WriteLine();
+                Console.Error.WriteLine(Args.GetHelpText());
+                return 1;
+            }
+            var app = new Excel.Application { Visible = true };
+            var wb = app.OpenWorkbook(Path.GetFullPath(Args.Arguments[0].Value));
             IEnumerable<Table> tableInfos = GetTableInfos(wb);
             var dbName = wb.Name.Substring(0, wb.Name.Length - 5);
-            Console.WriteLine($"Erstelle Datenbank \"{dbName}\"");
+            Console.WriteLine(LocalizedStrings.CreatingDatabase, dbName);
 
             Database.Connect();
             Database.CreateDb(dbName, true);
@@ -22,7 +53,7 @@ namespace Excel2PostgreSQL
 
             foreach (var table in tableInfos)
             {
-                Console.WriteLine($"\tErstelle Tabelle \"{table.Name}\"");
+                Console.WriteLine("\t" + LocalizedStrings.CreatingTable, table.Name);
                 Database.AddTableWithData(table);
             }
             Database.Disconnect();
@@ -30,6 +61,7 @@ namespace Excel2PostgreSQL
             Marshal.ReleaseComObject(wb);
             app.Quit();
             Marshal.ReleaseComObject(app);
+            return 0;
         }
 
         private static IEnumerable<Table> GetTableInfos(Excel.Workbook wb)

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="EXCEL2POSTGRESQL/PROPERTIES/LOCALIZEDSTRINGS.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6810.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="EXCEL2POSTGRESQL/PROPERTIES/LOCALIZEDSTRINGS.RESX">
+        <trans-unit id="FileArgDescription" translate="yes" xml:space="preserve">
+          <source>The Microsoft Excel file to read data from</source>
+          <target state="final">Die Microsoft-Excel-Datei, aus der die Daten gelesen werden sollen.</target>
+        </trans-unit>
+        <trans-unit id="FileArgName" translate="yes" xml:space="preserve">
+          <source>File</source>
+          <target state="final">Datei</target>
+        </trans-unit>
+        <trans-unit id="MissingExcelFileArg" translate="yes" xml:space="preserve">
+          <source>Argument missing. Please specify the Excel file to import as Argument.</source>
+          <target state="final">Argument fehlt. Bitte geben Sie die zu importierende Excel-Datei als Argument an.</target>
+        </trans-unit>
+        <trans-unit id="CreatingDatabase" translate="yes" xml:space="preserve">
+          <source>Creating database "{0}"</source>
+          <target state="final">Erstelle Datenbank "{0}"</target>
+        </trans-unit>
+        <trans-unit id="CreatingTable" translate="yes" xml:space="preserve">
+          <source>Creating table "{0}"</source>
+          <target state="final">Erstelle Tabelle "{0}"</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>
