@@ -11,11 +11,11 @@ using Excel2PostgreSQL.Properties;
 
 namespace Excel2PostgreSQL
 {
-    internal class Program
+    public class Program
     {
         internal static CommandLineApplication Args { get; } = new CommandLineApplication();
 
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             SetupArgsParser();
             return Args.Execute(args);

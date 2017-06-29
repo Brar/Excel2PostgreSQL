@@ -22,7 +22,7 @@ namespace Excel2PostgreSQL.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class LocalizedStrings {
+    public class LocalizedStrings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Excel2PostgreSQL.Properties {
         ///   Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Excel2PostgreSQL.Properties.LocalizedStrings", typeof(LocalizedStrings).Assembly);
@@ -51,7 +51,7 @@ namespace Excel2PostgreSQL.Properties {
         ///   Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Excel2PostgreSQL.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Creating database &quot;{0}&quot; ähnelt.
         /// </summary>
-        internal static string CreatingDatabase {
+        public static string CreatingDatabase {
             get {
                 return ResourceManager.GetString("CreatingDatabase", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Excel2PostgreSQL.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Creating table &quot;{0}&quot; ähnelt.
         /// </summary>
-        internal static string CreatingTable {
+        public static string CreatingTable {
             get {
                 return ResourceManager.GetString("CreatingTable", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Excel2PostgreSQL.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The Microsoft Excel file to read data from ähnelt.
         /// </summary>
-        internal static string FileArgDescription {
+        public static string FileArgDescription {
             get {
                 return ResourceManager.GetString("FileArgDescription", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Excel2PostgreSQL.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die File ähnelt.
         /// </summary>
-        internal static string FileArgName {
+        public static string FileArgName {
             get {
                 return ResourceManager.GetString("FileArgName", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Excel2PostgreSQL.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Argument missing. Please specify the Excel file to import as Argument. ähnelt.
         /// </summary>
-        internal static string MissingExcelFileArg {
+        public static string MissingExcelFileArg {
             get {
                 return ResourceManager.GetString("MissingExcelFileArg", resourceCulture);
             }

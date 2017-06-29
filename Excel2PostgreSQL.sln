@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel2PostgreSQL", "Excel2PostgreSQL\Excel2PostgreSQL.csproj", "{FD607C2C-89B8-4DB0-874A-560D185D2CB5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6CA62D96-D996-43DF-9FB7-45616B4F6613}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel2PostgreSQL", "src\Excel2PostgreSQL\Excel2PostgreSQL.csproj", "{FD607C2C-89B8-4DB0-874A-560D185D2CB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1BF09FD8-97A2-4996-A0E2-F4144ECAAE22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel2PostgreSQL.Tests", "test\Excel2PostgreSQL.Tests\Excel2PostgreSQL.Tests.csproj", "{386378CA-7712-4D39-B9CD-B451715B17C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +21,16 @@ Global
 		{FD607C2C-89B8-4DB0-874A-560D185D2CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD607C2C-89B8-4DB0-874A-560D185D2CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD607C2C-89B8-4DB0-874A-560D185D2CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{386378CA-7712-4D39-B9CD-B451715B17C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{386378CA-7712-4D39-B9CD-B451715B17C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{386378CA-7712-4D39-B9CD-B451715B17C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{386378CA-7712-4D39-B9CD-B451715B17C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FD607C2C-89B8-4DB0-874A-560D185D2CB5} = {6CA62D96-D996-43DF-9FB7-45616B4F6613}
+		{386378CA-7712-4D39-B9CD-B451715B17C6} = {1BF09FD8-97A2-4996-A0E2-F4144ECAAE22}
 	EndGlobalSection
 EndGlobal
