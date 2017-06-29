@@ -97,6 +97,15 @@ namespace Excel2PostgreSQL.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The file &apos;{0}&apos; doesn&apos;t exist. ähnelt.
+        /// </summary>
+        public static string FileDoesNotExist {
+            get {
+                return ResourceManager.GetString("FileDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Argument missing. Please specify the Excel file to import as Argument. ähnelt.
         /// </summary>
         public static string MissingExcelFileArg {

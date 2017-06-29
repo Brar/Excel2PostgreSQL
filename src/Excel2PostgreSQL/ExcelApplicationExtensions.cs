@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Excel2PostgreSQL
@@ -14,7 +10,7 @@ namespace Excel2PostgreSQL
             var workbooks = application.Workbooks;
             try
             {
-                var workbook = workbooks.Open(filename);
+                var workbook = workbooks.Open(filename, ReadOnly: true);
                 return workbook;
             }
             finally

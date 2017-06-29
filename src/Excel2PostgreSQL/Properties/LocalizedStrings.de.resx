@@ -27,4 +27,7 @@
   <data name="CreatingTable" xml:space="preserve">
     <value>Erstelle Tabelle "{0}"</value>
   </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>Die Datei '{0}' ist nicht vorhanden.</value>
+  </data>
 </root>

@@ -40,21 +40,20 @@ namespace Excel2PostgreSQL
             }
         }
 
-        public static void AddTableWithData(Table table)
+        public static void AddTableWithData(TransferTable table)
         {
             CreateTable(table);
             string cmd = CreateCopyCommand(table);
             using (var writer =
                 _connection.BeginBinaryImport(cmd))
             {
-                foreach (object[] values in table.Data)
+                foreach (var row in table.Rows)
                 {
                     writer.StartRow();
-                    for (int i = 0; i < values.Length; i++)
+                    foreach (var column in table.Columns)
                     {
-                        var type = table.ColumnInfos[i].Type;
-                        var val = ConvertValue(values[i], type);
-                        writer.Write(val, type);
+                        var value = ConvertValue(row[column], column.Type);
+                        writer.Write(value, column.Type);
                     }
                 }
             }
@@ -82,18 +81,19 @@ namespace Excel2PostgreSQL
                     return value.ToString();
                 case NpgsqlDbType.Date:
                 case NpgsqlDbType.Timestamp:
-                case NpgsqlDbType.Time:
                     return DateTime.FromOADate((double)value);
+                case NpgsqlDbType.Time:
+                    return DateTime.FromOADate((double)value).TimeOfDay;
             }
             throw new NotSupportedException();
         }
 
-        private static void CreateTable(Table table)
+        private static void CreateTable(TransferTable table)
         {
             using (var command = _connection.CreateCommand())
             {
                 StringBuilder sb = new StringBuilder($"CREATE TABLE {cb.QuoteIdentifier(table.Name)} (");
-                foreach (var columnInfo in table.ColumnInfos)
+                foreach (var columnInfo in table.Columns)
                 {
                     sb.Append(cb.QuoteIdentifier(columnInfo.Name));
                     sb.Append(" ");
@@ -135,12 +135,12 @@ namespace Excel2PostgreSQL
             throw new NotSupportedException();
         }
 
-        private static string CreateCopyCommand(Table table)
+        private static string CreateCopyCommand(TransferTable table)
         {
             StringBuilder sb = new StringBuilder("COPY ");
             sb.Append(cb.QuoteIdentifier(table.Name));
             sb.Append(" (");
-            foreach (var columnInfo in table.ColumnInfos)
+            foreach (var columnInfo in table.Columns)
             {
                 sb.Append(cb.QuoteIdentifier(columnInfo.Name));
                 sb.Append(", ");

@@ -13,7 +13,7 @@ namespace Excel2PostgreSQL
 {
     public class Program
     {
-        internal static CommandLineApplication Args { get; } = new CommandLineApplication();
+        internal static CommandLineApplication Args { get; private set; }
 
         public static int Main(string[] args)
         {
@@ -25,7 +25,7 @@ namespace Excel2PostgreSQL
         {
             string applicationName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
             string applicationVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
-            Args.Name = applicationName;
+            Args = new CommandLineApplication { Name = applicationName };
             Args.Argument(LocalizedStrings.FileArgName, LocalizedStrings.FileArgDescription);
             Args.HelpOption("-h | -? | --help");
             Args.VersionOption("-V | --version", $"{applicationName} v{applicationVersion}");
@@ -34,16 +34,41 @@ namespace Excel2PostgreSQL
 
         private static int ExecuteCommandLineApplication()
         {
-            if (Args.Arguments.First().Value == null)
+            Excel.Application app = null;
+            Excel.Workbook wb = null;
+            try
             {
-                Console.Error.WriteLine(LocalizedStrings.MissingExcelFileArg);
-                Console.Error.WriteLine();
-                Console.Error.WriteLine(Args.GetHelpText());
-                return 1;
+                var excelFile = Args.Arguments.First().Value;
+
+                if (excelFile == null)
+                {
+                    return HandleError(ExitCode.ErrorMissingExcelFileArg, LocalizedStrings.MissingExcelFileArg);
+                }
+
+                excelFile = Path.GetFullPath(excelFile);
+
+                if (!File.Exists(excelFile))
+                {
+                    return HandleError(ExitCode.ErrorFileDoesNotExist, LocalizedStrings.FileDoesNotExist, excelFile);
+                }
+                app = new Excel.Application { Visible = false };
+                wb = app.OpenWorkbook(excelFile);
+                return ImportWorkbook(wb);
             }
-            var app = new Excel.Application { Visible = true };
-            var wb = app.OpenWorkbook(Path.GetFullPath(Args.Arguments[0].Value));
-            IEnumerable<Table> tableInfos = GetTableInfos(wb);
+            catch (Exception e)
+            {
+                return HandleUnexpectedException(e);
+            }
+            finally
+            {
+                CleanUpWorkbook(wb);
+                CleanUpApplication(app);
+            }
+        }
+
+        private static int ImportWorkbook(Excel.Workbook wb)
+        {
+            IEnumerable<TransferTable> tableInfos = GetTableInfos(wb);
             var dbName = wb.Name.Substring(0, wb.Name.Length - 5);
             Console.WriteLine(LocalizedStrings.CreatingDatabase, dbName);
 
@@ -57,22 +82,57 @@ namespace Excel2PostgreSQL
                 Database.AddTableWithData(table);
             }
             Database.Disconnect();
-            wb.Close(false);
-            Marshal.ReleaseComObject(wb);
-            app.Quit();
-            Marshal.ReleaseComObject(app);
-            return 0;
+            return (int)ExitCode.Success;
         }
 
-        private static IEnumerable<Table> GetTableInfos(Excel.Workbook wb)
+        private static int HandleUnexpectedException(Exception e)
+        {
+#if DEBUG
+            Console.Error.WriteLine("An unexpected error occured: {0}", e.ToString());
+#else
+            Console.Error.WriteLine("An unexpected error occured: {0}", e.Message);
+#endif
+            return (int)ExitCode.ErrorUnknown;
+        }
+
+        private static int HandleError(ExitCode exitCode, string message, params object[] arg)
+        {
+            Console.Error.WriteLine(message, arg);
+            if (exitCode == ExitCode.ErrorMissingExcelFileArg)
+            {
+                Console.Error.WriteLine();
+                Console.Error.WriteLine(Args.GetHelpText());
+            }
+            return (int)exitCode;
+        }
+
+        private static void CleanUpApplication(Excel.Application app)
+        {
+            if (app != null)
+            {
+                app.Quit();
+                Marshal.FinalReleaseComObject(app);
+            }
+        }
+
+        private static void CleanUpWorkbook(Excel.Workbook wb)
+        {
+            if (wb != null)
+            {
+                wb.Close(false);
+                Marshal.FinalReleaseComObject(wb);
+            }
+        }
+
+        private static IEnumerable<TransferTable> GetTableInfos(Excel.Workbook wb)
         {
             var sheets = wb.Worksheets;
             try
             {
-                List<Table> tables = new List<Table>(sheets.Count);
+                List<TransferTable> tables = new List<TransferTable>(sheets.Count);
                 foreach (Excel.Worksheet sheet in sheets)
                 {
-                    tables.Add(Table.FromWorkSheet(sheet));
+                    tables.Add(TransferTable.FromWorkSheet(sheet));
                     Marshal.ReleaseComObject(sheet);
                 }
                 return tables;

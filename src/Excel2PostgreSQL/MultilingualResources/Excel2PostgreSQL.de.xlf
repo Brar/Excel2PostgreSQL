@@ -26,6 +26,10 @@
           <source>Creating table "{0}"</source>
           <target state="final">Erstelle Tabelle "{0}"</target>
         </trans-unit>
+        <trans-unit id="FileDoesNotExist" translate="yes" xml:space="preserve">
+          <source>The file '{0}' doesn't exist.</source>
+          <target state="final">Die Datei '{0}' ist nicht vorhanden.</target>
+        </trans-unit>
       </group>
     </body>
   </file>
